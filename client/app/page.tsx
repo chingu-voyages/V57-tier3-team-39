@@ -1,11 +1,11 @@
-"use client";
-
 import { Button, Card, Text } from "@mantine/core";
 import {
   IconArrowRight,
   IconCircleCheckFilled,
   IconClockFilled,
 } from "@tabler/icons-react";
+import { FaRegHandshake, FaShieldHalved, FaEye } from "react-icons/fa6";
+import { FaHistory, FaRegStar } from "react-icons/fa";
 
 export default function Home() {
   return (
@@ -84,7 +84,7 @@ export default function Home() {
           <Card shadow="sm" padding="lg" radius="md" withBorder>
             <h2 className="text-lg font-semibold mb-2">
               <span className="inline-block mr-2 align-middle">
-                <IconClockFilled size={32} stroke={2} /> {/* filled */}
+                <IconClockFilled size={32} stroke={2} />
               </span>
               Real Time Tracking
             </h2>
@@ -92,6 +92,92 @@ export default function Home() {
               Monitor pull request status in real-time with automatic updates
               from GitHub API
             </p>
+          </Card>
+        </div>
+        <div>
+          <Card shadow="sm" padding="lg" radius="md" withBorder>
+            <h2 className="text-lg font-semibold mb-2">
+              <span className="inline-block mr-2 align-middle">
+                <FaRegHandshake size={32} />
+              </span>
+              Team Collaboration
+            </h2>
+            <p>
+              See who's reviewing what and track team member contributions at a
+              glance
+            </p>
+          </Card>
+        </div>
+        <div>
+          <Card shadow="sm" padding="lg" radius="md" withBorder>
+            <h2 className="text-lg font-semibold mb-2">
+              <span className="inline-block mr-2 align-middle">
+                <FaHistory size={32} />
+              </span>
+              Historical Data
+            </h2>
+            <p>
+              Access complete history of closed and merged pull request for
+              analysis
+            </p>
+          </Card>
+        </div>
+        <div>
+          <Card shadow="sm" padding="lg" radius="md" withBorder>
+            <h2 className="text-lg font-semibold mb-2">
+              <span className="inline-block mr-2 align-middle">
+                <FaRegStar size={32} />
+              </span>
+              Smart Filtering
+            </h2>
+            <p>
+              Filter PRs by author, reviewer, or status to find what you need
+              quickly
+            </p>
+          </Card>
+        </div>
+        <div>
+          <Card shadow="sm" padding="lg" radius="md" withBorder>
+            <h2 className="text-lg font-semibold mb-2">
+              <span className="inline-block mr-2 align-middle">
+                <FaShieldHalved size={32} />
+              </span>
+              Secure Access
+            </h2>
+            <p>
+              Use personal access tokens for secure API access with higher rate
+              limits
+            </p>
+          </Card>
+        </div>
+        <div>
+          <Card shadow="sm" padding="lg" radius="md" withBorder>
+            <h2 className="text-lg font-semibold mb-2">
+              <span className="inline-block mr-2 align-middle">
+                <FaEye size={32} />
+              </span>
+              Comprehensive View
+            </h2>
+            <p>
+              View PR details, labels, reviewers, and activity all in one place
+            </p>
+          </Card>
+        </div>
+        <div>
+          <Card shadow="sm" padding="lg" radius="md" withBorder>
+            <h2 className="text-lg font-semibold mb-2">
+              Ready to Streamline Your PR Process?
+            </h2>
+            <p>
+              Start tracking your team's pull requests today. No installation
+              required - just enter your repository details and go!
+            </p>
+            <Button variant="default">
+              Get Started Now
+              <span>
+                <IconArrowRight size={18} />
+              </span>
+            </Button>
           </Card>
         </div>
       </main>
