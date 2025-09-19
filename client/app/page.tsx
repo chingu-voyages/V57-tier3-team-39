@@ -6,8 +6,15 @@ import {
   IconCircleCheckFilled,
   IconClockFilled,
 } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
+  const handlePRpage = () => {
+    router.push("/open-prs");
+  }
+
   return (
     <div className="flex justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
@@ -21,7 +28,7 @@ export default function Home() {
             in one beautiful dashboard.
           </p>
           <div className="flex gap-4 flex-col mt-4">
-            <Button variant="default">
+            <Button variant="default" onClick={handlePRpage}>
               View Open PRs
               <span>
                 <IconArrowRight size={18} />
