@@ -48,6 +48,21 @@ export default function OpenPRsPage() {
         }
     };
 
+    const savePRsAsJSON = () => {
+        if (prs.length === 0) return;
+
+        const blob = new Blob([JSON.stringify(prs, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "pull_requests_lists.json";
+        link.click();
+
+        URL.revokeObjectURL(url);
+    };
+
+
     return (
     <>
         <div className="p-3 text-4xl font-bold">Open Pull Requests</div>
@@ -89,14 +104,14 @@ export default function OpenPRsPage() {
 
             <div className="mt-4">
                 <label className="block text-sm font-medium mb-1">
-                GitHub Personal Access Token (Optional)
+                    GitHub Personal Access Token (Optional)
                 </label>
                 <input
-                type="password"
-                value={token}
-                onChange={(e) => setToken(e.target.value)}
-                placeholder="ghp_..."
-                className="w-full border border-gray-300 px-3 py-2 rounded-md"
+                    type="password"
+                    value={token}
+                    onChange={(e) => setToken(e.target.value)}
+                    placeholder="ghp_..."
+                    className="w-full border border-gray-300 px-3 py-2 rounded-md"
                 />
             </div>
 
@@ -112,23 +127,35 @@ export default function OpenPRsPage() {
                 >
                     Fetch Pull Requests
                 </button>
+
+                <button
+                    onClick={savePRsAsJSON}
+                    disabled={prs.length === 0}
+                    className={`px-4 py-2 rounded-md text-white ${
+                        prs.length === 0
+                            ? "bg-gray-300 cursor-not-allowed"
+                            : "bg-gray-500 hover:bg-gray-600"
+                    }`}
+                >
+                    Save PRs as JSON
+                </button>
             </div>
         </div>
 
         {/* Display fetch data */}
         <div className="m-8 mx-4 p-6 bg-gray-50 border border-gray-300 rounded-md">
-                {error && (
-                    <div className="flex justify-center items-center h-32">
-                        <p className="text-red-500 text-2xl">{error}</p>
-                    </div>
-                )}
+            {error && (
+                <div className="flex justify-center items-center h-32">
+                    <p className="text-red-500 text-2xl">{error}</p>
+                </div>
+            )}
 
-                {prs.length === 0 && !error ? (
-                    <div className="text-gray-600 text-2xl">No open PRs</div>
-                ) : (
-                    prs.map((pr) => <PullRequestCard key={pr.number} pr={pr} />)
-                )}
-            </div>
+            {prs.length === 0 && !error ? (
+                <div className="text-gray-600 text-2xl">No open PRs</div>
+            ) : (
+                prs.map((pr) => <PullRequestCard key={pr.number} pr={pr} />)
+            )}
+        </div>
     </>
     );
 }
