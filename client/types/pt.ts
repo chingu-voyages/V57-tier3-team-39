@@ -6,4 +6,5 @@ export interface PullRequest {
     createdAt: string;
     lastAction: string;
     updatedAt: string;
+    url: string;
 }

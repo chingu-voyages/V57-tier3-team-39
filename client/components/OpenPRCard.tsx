@@ -14,7 +14,14 @@ export default function PullRequestCard({ pr }: Props) {
             <div>
                 <Text fw={700} size="lg">
                     <span className="bg-gray-200 px-1 rounded">#{pr.number}</span>{" "}
-                    <span className="text-blue-500">{pr.title}</span>
+                    <a
+                        href={pr.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline"
+                        >
+                        {pr.title}
+                    </a>
                 </Text>
 
                 <Text size="sm" c="dimmed">

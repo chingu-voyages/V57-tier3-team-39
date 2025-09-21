@@ -38,6 +38,7 @@ export default function OpenPRsPage() {
                 updatedAt: pr.updated_at,
                 requested_reviewers: pr.requested_reviewers?.map((r: any) => r.login) ?? [],
                 lastAction: pr.state,
+                url: pr.html_url,
             }));
 
             setPrs(mapped);
