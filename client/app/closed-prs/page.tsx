@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { PullRequest } from "@/types/pr";
 import PullRequestCard from "@/components/OpenPRCard";
 import { Box, Text } from "@mantine/core";
+import { savePRsAsJSON } from "@/lib/downloadPRs";
 
 export default function ClosedPRsPage() {
   const [prs, setPrs] = useState<PullRequest[]>([]);
@@ -124,6 +125,18 @@ export default function ClosedPRsPage() {
             }`}
           >
             Fetch Pull Requests
+          </button>
+
+          <button
+            onClick={() => savePRsAsJSON(prs, "closed_pull_requests.json")}
+            disabled={prs.length === 0}
+            className={`px-4 py-2 rounded-md text-white ${
+              prs.length === 0
+                ? "bg-gray-300 cursor-not-allowed"
+                : "bg-gray-500 hover:bg-gray-600"
+            }`}
+          >
+            Save PRs as JSON
           </button>
         </div>
       </div>
