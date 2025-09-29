@@ -145,7 +145,7 @@ export default function ClosedPRsPage() {
         )}
 
         {prs.length === 0 && !error ? (
-          <div className="text-gray-600 text-2xl">No open PRs</div>
+          <div className="text-gray-600 text-2xl">No closed PRs</div>
         ) : (
           prs.map((pr) => <PullRequestCard key={pr.number} pr={pr} />)
         )}
