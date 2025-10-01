@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button, Card, Text } from "@mantine/core";
 import {
@@ -38,7 +38,11 @@ export default function Home() {
               all in one beautiful dashboard.
             </p>
             <div className="mt-16">
-              <Button variant="filled" color="violet" onClick={handleOpenPRPage}>
+              <Button
+                variant="filled"
+                color="violet"
+                onClick={handleOpenPRPage}
+              >
                 View Open PRs
                 <span className="ml-2">
                   <IconArrowRight size={18} />
