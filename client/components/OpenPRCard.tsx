@@ -30,6 +30,7 @@ export default function PullRequestCard({ pr }: Props) {
         : created.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 
     return (
+        <h1>Testing PR --- ignore </h1>
         <Card padding="lg" radius={0} className="border-t-2 border-gray-400">
             {/* Mobile design */}
             <div>
