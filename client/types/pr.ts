@@ -7,4 +7,7 @@ export interface PullRequest {
     lastAction: string;
     updatedAt: string;
     url: string;
+    mergedAt?: string;
+    closedAt?: string;
+    state?: string; // "open" or "closed"
 }
