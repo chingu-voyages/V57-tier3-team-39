@@ -1,6 +1,6 @@
 "use client";
 import { useAtom } from "jotai";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { LoadingOverlay } from "@mantine/core";
 import {
   closedPRsAtom,
@@ -27,8 +27,57 @@ export default function ClosedPRsPage() {
   const [limit, setLimit] = useState<number | null>(5);
   const [loading, setLoading] = useState(false);
 
+  // filter state
+  const [filterAuthor, setFilterAuthor] = useState<string>("");
+  const [filterReviewer, setFilterReviewer] = useState<string>("");
+  const [filterStartDate, setFilterStartDate] = useState<string>("");
+  const [filterEndDate, setFilterEndDate] = useState<string>("");
+
+  // sort state
+  const [sortBy, setSortBy] = useState<"recency" | "activity">("recency");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+
+  // filter function
+  const applyFilters = (prList: PullRequest[]): PullRequest[] => {
+    return prList.filter((pr) => {
+      const matchAuthor = !filterAuthor || pr.author === filterAuthor;
+      const matchReviewer = !filterReviewer || pr.requested_reviewers.includes(filterReviewer);
+      
+      const matchStartDate = !filterStartDate || new Date(pr.createdAt) >= new Date(filterStartDate);
+      const matchEndDate = !filterEndDate || new Date(pr.createdAt) <= new Date(filterEndDate);
+      
+      return matchAuthor && matchReviewer && matchStartDate && matchEndDate;
+    });
+  };
+
+  // sort function
+  const applySort = (prList: PullRequest[]): PullRequest[] => {
+    return [...prList].sort((a, b) => {
+      if (sortBy === "recency") {
+        const diff = new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime();
+        return sortOrder === "asc" ? diff : -diff;
+      } else if (sortBy === "activity") {
+        const activityA = new Date(a.lastAction).getTime();
+        const activityB = new Date(b.lastAction).getTime();
+        return sortOrder === "asc" ? activityA - activityB : activityB - activityA;
+      }
+      return 0;
+    });
+  };
+
+  const filteredPRs = useMemo(() => {
+    return applySort(applyFilters(prs));
+  }, [prs, filterAuthor, filterReviewer, filterStartDate, filterEndDate, sortBy, sortOrder]);
+
+  const clearFilters = () => {
+    setFilterAuthor("");
+    setFilterReviewer("");
+    setFilterStartDate("");
+    setFilterEndDate("");
+  };
+
   const PAGE_SIZE = 3;
-  const paginatedPRs = prs.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const paginatedPRs = filteredPRs.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const fetchPRs = async () => {
     setLoading(true);
@@ -62,10 +111,29 @@ export default function ClosedPRsPage() {
 
   return (
     <div className="flex-grow">
-      <h1 className="p-3 text-4xl font-bold text-center">
+      <h1
+        className="p-3 text-4xl font-bold text-center mt-6"
+        style={{ fontFamily: "var(--font-syne)" }}
+      >
         Closed Pull Requests
       </h1>
-      <RepoSettingsForm onFetch={fetchPRs} prs={prs} />
+      <RepoSettingsForm 
+        onFetch={fetchPRs} 
+        prs={prs}
+        filterAuthor={filterAuthor}
+        setFilterAuthor={setFilterAuthor}
+        filterReviewer={filterReviewer}
+        setFilterReviewer={setFilterReviewer}
+        filterStartDate={filterStartDate}
+        setFilterStartDate={setFilterStartDate}
+        filterEndDate={filterEndDate}
+        setFilterEndDate={setFilterEndDate}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder}
+        clearFilters={clearFilters}
+      />
 
       <div className="flex justify-center items-center gap-2 my-4">
         <label className="font-medium text-gray-800">Max PRs:</label>
@@ -119,9 +187,17 @@ export default function ClosedPRsPage() {
             loaderProps={{ color: "purple", type: "bars" }}
           />
           {/* If PR not found */}
-          {paginatedPRs.length === 0 && !error ? (
+          {filteredPRs.length === 0 && prs.length > 0 && !error ? (
             <div
-              className="text-gray-600 text-2xl text-center"
+              className="text-gray-600 text-2xl text-center p-8"
+              role="status"
+              aria-live="polite"
+            >
+              No PRs found for this filter
+            </div>
+          ) : paginatedPRs.length === 0 && !error ? (
+            <div
+              className="text-gray-600 text-2xl text-center p-8"
               role="status"
               aria-live="polite"
             >
@@ -136,7 +212,9 @@ export default function ClosedPRsPage() {
         </Box>
       </div>
 
-      <Pagination pageAtom={closedPageAtom} prsAtom={closedPRsAtom} />
+      {filteredPRs.length > 0 && (
+        <Pagination pageAtom={closedPageAtom} prsAtom={closedPRsAtom} />
+      )}
     </div>
   );
 }

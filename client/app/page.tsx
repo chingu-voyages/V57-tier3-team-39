@@ -27,7 +27,10 @@ export default function Home() {
           }}
         >
           <div className="flex flex-col justify-center items-center text-center max-w-[736px] mx-auto">
-            <h1 className="text-4xl font-bold ">
+            <h1 
+              className="text-4xl font-bold"
+              style={{ fontFamily: "var(--font-syne)" }}
+            >
               Track Pull Requests Like Never Before!
             </h1>
             <p className="text-white text-lg mt-16">
@@ -95,7 +98,10 @@ export default function Home() {
             </div>
 
             <div className="text-center mb-8">
-              <h2 className="text-lg font-semibold mb-2">
+              <h2 
+                className="text-lg font-semibold mb-2"
+                style={{ fontFamily: "var(--font-syne)" }}
+              >
                 Powerful Feature for Better PR Management
               </h2>
               <p className="px-[64px]">
